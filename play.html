@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width">
+  <style>
+    html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: #000;
+  font-family: Arial;
+}
+
+h1 {
+  color: green;
+  text-align: center;
+}
+
+.player {
+  display: grid;
+  grid-template-columns: repeat(3, 100%);
+  overflow: hidden;
+  scroll-behavior: smooth;
+}
+.player section {
+  width: 100%;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, auto);
+  margin: 20px 0;
+}
+.player section .item {
+  position: relative;
+  padding: 0 2px;
+  transition: 250ms all;
+}
+.player section .item:hover {
+  margin: 0 40px;
+  transform: scale(1.2);
+}
+.player section .item .heading {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: #fff;
+}
+.player section .item .duration {
+  position: absolute;
+  bottom: 0;
+  left: 20px;
+  color: #fff;
+}
+.player section .arrow__btn {
+  position: absolute;
+  color: #fff;
+  text-decoration: none;
+  font-size: 6em;
+  background: black;
+  width: 80px;
+  padding: 20px;
+  text-align: center;
+  z-index: 1;
+}
+.player section .left-arrow {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(-90deg, rgba(0, 0, 0, 0) 0%, black 100%);
+}
+.player section .right-arrow {
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, black 100%);
+}
+  </style>
+</head>
+<body>
+
+<h1>Unimed Play</h1>
+<div class="player">
+
+  <section id="section1">
+    <a href="#section3" class="arrow__btn left-arrow">‹</a>
+    <div class="item">
+      <a href="#">
+        <iframe class="latestVideoEmbed" vnum='0' width="341" height="192" frameborder="0" allowfullscreen></iframe>
+      </a>
+    </div>
+    <div class="item">
+
+      <a href="#">
+      <iframe class="latestVideoEmbed" vnum='1' width="341" height="192" frameborder="0" allowfullscreen></iframe>
+        
+      </a>
+    </div>
+    <div class="item">
+      
+      <a href="#">
+      <iframe class="latestVideoEmbed" vnum='2' width="341" height="192" frameborder="0" allowfullscreen></iframe>
+      </a>
+    </div>
+    <div class="item">
+      <a href="#">
+      <iframe class="latestVideoEmbed" vnum='3' width="341" height="192" frameborder="0" allowfullscreen></iframe>
+      </a>
+    </div>
+    <div class="item">
+      <iframe class="latestVideoEmbed" vnum='4' width="341" height="192" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <a href="#section2" class="arrow__btn right-arrow">›</a>
+  </section>
+
+  <section id="section2">
+    <a href="#section1" class="arrow__btn left-arrow">‹</a>
+    <div class="item">
+      <iframe class="latestVideoEmbed" vnum='5' width="341" height="192" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="item">
+      <iframe class="latestVideoEmbed" vnum='6' width="341" height="192" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="item">
+      <iframe class="latestVideoEmbed" vnum='7' width="341" height="192" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="item">
+      <iframe class="latestVideoEmbed" vnum='8' width="341" height="192" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="item">
+      <iframe class="latestVideoEmbed" vnum='9' width="341" height="192" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <a href="#section3" class="arrow__btn right-arrow">›</a>
+  </section>
+
+
+    <a href="#section1" class="arrow__btn right-arrow">›</a>
+  </section>
+</div>
+<script>
+      var loadVideo = (iframe) => {
+        var cid = "UC-4o5laGvz-pDS1-l2yKh6w";
+        var channelURL = encodeURIComponent(`https://www.youtube.com/feeds/videos.xml?channel_id=${cid}`)
+        var reqURL = `https://api.rss2json.com/v1/api.json?rss_url=${channelURL}`;
+   
+        fetch(reqURL)
+            .then(response => response.json())
+            .then(result => {
+              console.log(result)
+                var videoNumber = iframe.getAttribute('vnum')
+                var link = result.items[videoNumber].link;
+                var id = link.substr(link.indexOf("=") + 1);
+                iframe.setAttribute("src", `https://youtube.com/embed/${id}?controls=0&autoplay=1`);
+            })
+            .catch(error => console.log('error', error));
+    }
+    
+    var iframes = document.getElementsByClassName('latestVideoEmbed');
+    for (var i = 0, len = iframes.length; i < len; i++) {
+        loadVideo(iframes[i]);
+    }
+</script>
+</body>
+</html>
